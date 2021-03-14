@@ -44,7 +44,7 @@ jobs:
         run: /app/build.py --no-partitions os.img.gz boot.tar.gz
 
       - name: Release
-        uses: softprops/action-gh-release@v0.1.5
+        uses: softprops/action-gh-release@affa18e
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           files: |
