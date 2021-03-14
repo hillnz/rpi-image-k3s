@@ -1,4 +1,4 @@
-FROM jonoh/rpi-base:v0.0.1
+FROM jonoh/rpi-base:v0.0.3
 
 # renovate: datasource=github-releases depName=k3s-io/k3s versioning=loose
 ARG K3S_VERSION=v1.20.4+k3s1
