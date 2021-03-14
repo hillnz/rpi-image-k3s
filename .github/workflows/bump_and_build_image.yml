@@ -24,6 +24,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install docker client
+        run: |
+          apt update && apt install -y docker.io
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
