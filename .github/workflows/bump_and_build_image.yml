@@ -1,0 +1,58 @@
+name: build docker image
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    
+    container:
+      image: jonoh/rpi-docker-build:v0.0.3
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      # - name: Bump version and push tag
+      #   id: create_tag
+      #   uses: mathieudutour/github-tag-action@v4.6
+      #   if: ${{ github.ref == 'refs/heads/master' }}
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     create_annotated_tag: true
+
+      # - name: Set docker tag
+      #   id: docker_tag
+      #   env:
+      #     NEW_TAG: ${{ steps.create_tag.outputs.new_tag }}
+      #   run: |
+      #     echo "::set-output name=DOCKER_TAG::$([ "$NEW_TAG" = "" ] && echo test || echo "$NEW_TAG")"
+
+      - name: Build image
+        id: build_image
+        run: |
+          /app/build.py --no-partitions os.img.gz boot.tar.gz
+          pwd
+          ls -thral
+
+      # - name: Update repo description
+      #   uses: peter-evans/dockerhub-description@v2
+      #   if: ${{ github.ref == 'refs/heads/master' }}
+      #   with:
+      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+      #     password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      #     repository: jonoh/code-server-custom
