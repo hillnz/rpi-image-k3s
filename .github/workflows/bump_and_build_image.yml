@@ -50,5 +50,6 @@ jobs:
           files: |
             os.img.gz
             boot.tar.gz
+          tag_name: ${{ steps.create_tag.outputs.new_tag }} 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
