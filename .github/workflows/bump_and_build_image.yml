@@ -1,0 +1,53 @@
+name: build docker image
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    
+    container:
+      image: jonoh/rpi-docker-build:v0.0.3
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install docker client
+        run: |
+          apt update && apt install -y docker.io
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Bump version and push tag
+        id: create_tag
+        uses: mathieudutour/github-tag-action@v4.6
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          create_annotated_tag: true
+
+      - name: Build image
+        id: build_image
+        run: /app/build.py --no-partitions os.img.gz boot.tar.gz
+
+      - name: Release
+        uses: softprops/action-gh-release@v0.1.5
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          files: |
+            os.img.gz
+            boot.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
