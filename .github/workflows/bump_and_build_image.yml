@@ -49,6 +49,7 @@ jobs:
       - name: Build image
         id: build_image
         run: |
+          ls -thral
           /app/build.py --no-partitions os.img.gz boot.tar.gz
           pwd
           ls -thral
