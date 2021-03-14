@@ -3,10 +3,9 @@ name: build docker image
 on:
   pull_request:
     branches:
-      - master
+      - main
   push:
     branches:
-      - master
       - main
 
 jobs:
@@ -31,33 +30,24 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
-      # - name: Bump version and push tag
-      #   id: create_tag
-      #   uses: mathieudutour/github-tag-action@v4.6
-      #   if: ${{ github.ref == 'refs/heads/master' }}
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     create_annotated_tag: true
-
-      # - name: Set docker tag
-      #   id: docker_tag
-      #   env:
-      #     NEW_TAG: ${{ steps.create_tag.outputs.new_tag }}
-      #   run: |
-      #     echo "::set-output name=DOCKER_TAG::$([ "$NEW_TAG" = "" ] && echo test || echo "$NEW_TAG")"
+      - name: Bump version and push tag
+        id: create_tag
+        uses: mathieudutour/github-tag-action@v4.6
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          create_annotated_tag: true
 
       - name: Build image
         id: build_image
-        run: |
-          ls -thral
-          /app/build.py --no-partitions os.img.gz boot.tar.gz
-          pwd
-          ls -thral
+        run: /app/build.py --no-partitions os.img.gz boot.tar.gz
 
-      # - name: Update repo description
-      #   uses: peter-evans/dockerhub-description@v2
-      #   if: ${{ github.ref == 'refs/heads/master' }}
-      #   with:
-      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
-      #     password: ${{ secrets.DOCKERHUB_PASSWORD }}
-      #     repository: jonoh/code-server-custom
+      - name: Release
+        uses: softprops/action-gh-release@v0.1.5
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          files: |
+            os.img.gz
+            boot.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
