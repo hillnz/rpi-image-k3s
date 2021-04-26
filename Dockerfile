@@ -1,7 +1,7 @@
 FROM jonoh/rpi-base:v0.0.6
 
 # renovate: datasource=github-releases depName=k3s-io/k3s versioning=loose
-ARG K3S_VERSION=v1.20.6+k3s1
+ARG K3S_VERSION=v1.21.0+k3s1
 # Hack so script knows it's a systemd system
 RUN mkdir /run/systemd && \
     curl -sfL https://get.k3s.io | \    
