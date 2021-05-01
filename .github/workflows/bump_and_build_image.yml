@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     
     container:
-      image: jonoh/rpi-docker-build:v0.0.5
+      image: jonoh/rpi-docker-build:v0.0.11
       volumes:
         - /var/run/docker.sock:/var/run/docker.sock
 
@@ -49,7 +49,9 @@ jobs:
         with:
           files: |
             os.img.gz
+            os.img.sha256
             boot.tar.gz
+            boot.tar.sha256
           tag_name: ${{ steps.create_tag.outputs.new_tag }} 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
