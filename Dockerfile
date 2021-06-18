@@ -7,6 +7,7 @@ RUN mkdir /run/systemd && \
     curl -sfL https://get.k3s.io | \    
         INSTALL_K3S_VERSION=${K3S_VERSION} \
         INSTALL_K3S_SKIP_ENABLE=true \
+        K3S_TOKEN_FILE=/data/k3s/token \
         sh - && \
     systemctl enable k3s
 
