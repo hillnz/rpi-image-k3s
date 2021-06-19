@@ -1,5 +1,10 @@
 FROM jonoh/rpi-base:v0.0.8
 
+# Pre-reqs, per https://rancher.com/docs/k3s/latest/en/advanced/#enabling-legacy-iptables-on-raspbian-buster
+RUN update-alternatives --set iptables /usr/sbin/iptables-legacy && \
+    update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy && \
+    sed -i '$s/$/ cgroup_memory=1 cgroup_enable=memory/' /boot/cmdline.txt
+
 # renovate: datasource=github-releases depName=k3s-io/k3s versioning=loose
 ARG K3S_VERSION=v1.21.1+k3s1
 # Hack so script knows it's a systemd system
