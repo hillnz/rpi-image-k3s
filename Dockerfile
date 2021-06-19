@@ -1,4 +1,4 @@
-FROM jonoh/rpi-base:v0.0.8
+FROM jonoh/rpi-base:v0.0.9
 
 # Pre-reqs, per https://rancher.com/docs/k3s/latest/en/advanced/#enabling-legacy-iptables-on-raspbian-buster
 RUN update-alternatives --set iptables /usr/sbin/iptables-legacy && \
