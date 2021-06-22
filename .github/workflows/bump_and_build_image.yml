@@ -39,15 +39,20 @@ jobs:
           create_annotated_tag: true
           release_branches: main
 
-      - name: Build image
+      - name: Build images
         id: build_image
-        run: /app/build.py --no-partitions os.img.gz boot.tar.gz
+        run: |
+          docker build -t rpi .
+          /app/build.py --docker-image rpi --no-partitions os.img.gz boot.tar.gz &
+          /app/build.py --docker-image rpi --b-partition --data-partition flash.img.gz &
+          wait
 
       - name: Release
         uses: softprops/action-gh-release@affa18ef97bc9db20076945705aba8c516139abd
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           files: |
+            flash.img.gz
             os.img.gz
             os.img.sha256
             boot.tar.gz
