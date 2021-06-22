@@ -53,6 +53,7 @@ jobs:
         with:
           files: |
             flash.img.gz
+            flash.img.sha256
             os.img.gz
             os.img.sha256
             boot.tar.gz
