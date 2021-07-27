@@ -48,7 +48,7 @@ jobs:
           wait
 
       - name: Release
-        uses: softprops/action-gh-release@5e3f23f92c903aac25270f66388fdcb366c5b549
+        uses: softprops/action-gh-release@07c2133a095513679779fb6230e469d21dd1660c
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           files: |
