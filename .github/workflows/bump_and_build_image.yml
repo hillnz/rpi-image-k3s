@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     
     container:
-      image: jonoh/rpi-docker-build:v0.1.38
+      image: jonoh/rpi-docker-build:v0.1.39
       volumes:
         - /var/run/docker.sock:/var/run/docker.sock
 
