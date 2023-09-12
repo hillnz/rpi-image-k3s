@@ -28,7 +28,7 @@ jobs:
           apt update && apt install -y docker.io
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
 
       - name: Bump version and push tag
         id: create_tag
