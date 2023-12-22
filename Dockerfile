@@ -6,7 +6,7 @@ RUN update-alternatives --set iptables /usr/sbin/iptables-legacy && \
     sed -i '$s/$/ cgroup_memory=1 cgroup_enable=memory/' /boot/cmdline.txt
 
 # renovate: datasource=github-releases depName=k3s-io/k3s versioning=loose
-ARG K3S_VERSION=v1.28.4+k3s2
+ARG K3S_VERSION=v1.29.0+k3s1
 # Hack so script knows it's a systemd system
 RUN mkdir /run/systemd && \
     curl -sfL https://get.k3s.io | \    
